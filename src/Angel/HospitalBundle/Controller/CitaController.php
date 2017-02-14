@@ -37,14 +37,21 @@ class CitaController extends Controller
         $form = $this->createForm('Angel\HospitalBundle\Form\CitaType', $citum);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+       if ($form->isSubmitted() && $form->isValid()) {
             $comprobar=true;
             $em2=$this->getDoctrine()->getManager();
-            $citas = $em2->getRepository('AngelHospitalBundle:Cita')->findAll();
-            
-            foreach ($citas as $cita ){
-                $hora= date("H:i", strtotime($cita->getFcita()->format('Y-m-d H:i:s') .' + 15 minutes'));
 
+            //coger el nombre del medico del formulario
+            $nombreMedico=$form->get("idmedico")->getData();
+
+            //coger la fila de la BD desde un medico en concreto
+            $idmedico=$this->getDoctrine()->getManager()->getRepository('AngelHospitalBundle:Medico')->findOneByNombre($nombreMedico);
+            //coger todas las citas de un medico por su id del medico
+            $citas = $em2->getRepository('AngelHospitalBundle:Cita')->findBy(array('idmedico' =>$idmedico));
+            foreach ($citas as $cita ){
+               echo count($idmedico) . "<br>";
+               echo $cita->getFcita()->format('Y-m-d H:i:s');
+                $hora= date("H:i", strtotime($cita->getFcita()->format('Y-m-d H:i:s') .' + 15 minutes'));
                 if($hora<= $form->get("fcita")->getData()){
                     $comprobar=false;
                     break;
@@ -53,13 +60,10 @@ class CitaController extends Controller
             if($comprobar){
             $em = $this->getDoctrine()->getManager();
             $em->persist($citum);
-            $em->flush($citum);
-            return $this->redirectToRoute('cita_show', array('id' => $citum->getIdcita()));
-            }else{
-                
+            //$em->flush($citum);
+            //return $this->redirectToRoute('cita_show', array('id' => $citum->getIdcita()));
             }
         }
-
         return $this->render('cita/new.html.twig', array(
             'citum' => $citum,
             'form' => $form->createView(),
