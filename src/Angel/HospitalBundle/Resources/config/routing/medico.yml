@@ -1,0 +1,24 @@
+medico_index:
+    path:     /
+    defaults: { _controller: "AngelHospitalBundle:Medico:index" }
+    methods:  GET
+
+medico_show:
+    path:     /{id}/show
+    defaults: { _controller: "AngelHospitalBundle:Medico:show" }
+    methods:  GET
+
+medico_new:
+    path:     /new
+    defaults: { _controller: "AngelHospitalBundle:Medico:new" }
+    methods:  [GET, POST]
+
+medico_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "AngelHospitalBundle:Medico:edit" }
+    methods:  [GET, POST]
+
+medico_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "AngelHospitalBundle:Medico:delete" }
+    methods:  DELETE

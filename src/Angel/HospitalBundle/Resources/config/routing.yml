@@ -1,0 +1,15 @@
+angel_hospital_cita:
+    resource: "@AngelHospitalBundle/Resources/config/routing/cita.yml"
+    prefix:   /cita
+    
+angel_hospital_paciente:
+    resource: "@AngelHospitalBundle/Resources/config/routing/paciente.yml"
+    prefix:   /paciente
+    
+angel_hospital_medico:
+    resource: "@AngelHospitalBundle/Resources/config/routing/medico.yml"
+    prefix:   /medico
+    
+angel_hospital_homepage:
+    path:     /
+    defaults: { _controller: AngelHospitalBundle:Default:index }

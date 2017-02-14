@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Citum</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Idcita</th>
+                <td>{{ citum.idcita }}</td>
+            </tr>
+            <tr>
+                <th>Fcita</th>
+                <td>{% if citum.fcita %}{{ citum.fcita|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Observaciones</th>
+                <td>{{ citum.observaciones }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('cita_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('cita_edit', { 'id': citum.idcita }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

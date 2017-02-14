@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="Cita" table="Cita">
+    <indexes>
+      <index name="IDX_9E05355CAE825B80" columns="IdMedico"/>
+      <index name="IDX_9E05355CDA3580D5" columns="IdPaciente"/>
+    </indexes>
+    <id name="idcita" type="integer" column="IdCita">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="fcita" type="datetime" column="FCita" nullable="false"/>
+    <field name="observaciones" type="string" column="Observaciones" length="50" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="idmedico" target-entity="Medico" fetch="LAZY">
+      <join-columns>
+        <join-column name="IdMedico" referenced-column-name="IdMedico"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="idpaciente" target-entity="Paciente" fetch="LAZY">
+      <join-columns>
+        <join-column name="IdPaciente" referenced-column-name="IdPaciente"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
