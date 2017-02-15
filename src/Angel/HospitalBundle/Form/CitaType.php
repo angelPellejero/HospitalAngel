@@ -13,7 +13,7 @@ class CitaType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('fcita')->add('observaciones')->add('idmedico')->add('idpaciente')        ;
+        $builder->add('fcita')->add('observaciones')->add('idmedico')->add('idpaciente') ;
     }
     
     /**

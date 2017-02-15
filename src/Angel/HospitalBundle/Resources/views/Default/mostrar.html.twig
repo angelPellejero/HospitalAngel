@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Que medico eres?</h1>
+    <form method="POST" action="{{path('angel_medico_citas')}}">
+        <select name="Lmedicos">
+            {%for medicos in medicos %}
+                <option value="{{medicos.idmedico}}">{{medicos.nombre}}</option>
+            {% endfor%}
+        </select>
+        <input type="submit" value="mostrar citas">
+    </form><br>
+     <a href="{{ path('angel_hospital_homepage') }}"><button>Volver al inicio</button></a>
+{% endblock %}

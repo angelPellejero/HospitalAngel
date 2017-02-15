@@ -10,20 +10,19 @@ use Symfony\Component\HttpFoundation\Request;
  * Citum controller.
  *
  */
-class CitaController extends Controller
-{
+class CitaController extends Controller {
+
     /**
      * Lists all citum entities.
      *
      */
-    public function indexAction()
-    {
+    public function indexAction() {
         $em = $this->getDoctrine()->getManager();
 
         $citas = $em->getRepository('AngelHospitalBundle:Cita')->findAll();
 
         return $this->render('cita/index.html.twig', array(
-            'citas' => $citas,
+                    'citas' => $citas,
         ));
     }
 
@@ -31,42 +30,38 @@ class CitaController extends Controller
      * Creates a new citum entity.
      *
      */
-    public function newAction(Request $request)
-    {
+    public function newAction(Request $request) {
         $citum = new Cita();
         $form = $this->createForm('Angel\HospitalBundle\Form\CitaType', $citum);
         $form->handleRequest($request);
 
-       if ($form->isSubmitted() && $form->isValid()) {
-            $comprobar=true;
-            $em2=$this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em2 = $this->getDoctrine()->getManager();
 
             //coger el nombre del medico del formulario
-            $nombreMedico=$form->get("idmedico")->getData();
+            $nombreMedico = $form->get("idmedico")->getData();
+            //coger la fila de la BD desde un medico en concreto -> devuelve un objeto medico
+            $medico = $this->getDoctrine()->getManager()->getRepository('AngelHospitalBundle:Medico')->findByNombre((string) $nombreMedico);
+            //sacar el id de ese medico
+            $idmedico = $medico[0]->getIdmedico();
+            // coger todas las citas de un medico por su id del medico
+            $citas = $em2->getRepository('AngelHospitalBundle:Cita')->findByidmedico($idmedico);
 
-            //coger la fila de la BD desde un medico en concreto
-            $idmedico=$this->getDoctrine()->getManager()->getRepository('AngelHospitalBundle:Medico')->findOneByNombre($nombreMedico);
-            //coger todas las citas de un medico por su id del medico
-            $citas = $em2->getRepository('AngelHospitalBundle:Cita')->findBy(array('idmedico' =>$idmedico));
-            foreach ($citas as $cita ){
-               echo count($idmedico) . "<br>";
-               echo $cita->getFcita()->format('Y-m-d H:i:s');
-                $hora= date("H:i", strtotime($cita->getFcita()->format('Y-m-d H:i:s') .' + 15 minutes'));
-                if($hora<= $form->get("fcita")->getData()){
-                    $comprobar=false;
-                    break;
-                }
+            $fecha = $form->get("fcita")->getData();
+            $fecha1 = strtotime($fecha->format('Y-m-d H:i') . "+15 minutes");
+            $fecha2 = strtotime($fecha->format('Y-m-d H:i') . "-15 minutes");
+
+            foreach ($citas as $cita) {
+                
             }
-            if($comprobar){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($citum);
+//                $em = $this->getDoctrine()->getManager();
+//                $em->persist($citum);
             //$em->flush($citum);
             //return $this->redirectToRoute('cita_show', array('id' => $citum->getIdcita()));
-            }
         }
         return $this->render('cita/new.html.twig', array(
-            'citum' => $citum,
-            'form' => $form->createView(),
+                    'citum' => $citum,
+                    'form' => $form->createView(),
         ));
     }
 
@@ -74,13 +69,12 @@ class CitaController extends Controller
      * Finds and displays a citum entity.
      *
      */
-    public function showAction(Cita $citum)
-    {
+    public function showAction(Cita $citum) {
         $deleteForm = $this->createDeleteForm($citum);
 
         return $this->render('cita/show.html.twig', array(
-            'citum' => $citum,
-            'delete_form' => $deleteForm->createView(),
+                    'citum' => $citum,
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -88,8 +82,7 @@ class CitaController extends Controller
      * Displays a form to edit an existing citum entity.
      *
      */
-    public function editAction(Request $request, Cita $citum)
-    {
+    public function editAction(Request $request, Cita $citum) {
         $deleteForm = $this->createDeleteForm($citum);
         $editForm = $this->createForm('Angel\HospitalBundle\Form\CitaType', $citum);
         $editForm->handleRequest($request);
@@ -101,9 +94,9 @@ class CitaController extends Controller
         }
 
         return $this->render('cita/edit.html.twig', array(
-            'citum' => $citum,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+                    'citum' => $citum,
+                    'edit_form' => $editForm->createView(),
+                    'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -111,8 +104,7 @@ class CitaController extends Controller
      * Deletes a citum entity.
      *
      */
-    public function deleteAction(Request $request, Cita $citum)
-    {
+    public function deleteAction(Request $request, Cita $citum) {
         $form = $this->createDeleteForm($citum);
         $form->handleRequest($request);
 
@@ -132,12 +124,12 @@ class CitaController extends Controller
      *
      * @return \Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm(Cita $citum)
-    {
+    private function createDeleteForm(Cita $citum) {
         return $this->createFormBuilder()
-            ->setAction($this->generateUrl('cita_delete', array('id' => $citum->getIdcita())))
-            ->setMethod('DELETE')
-            ->getForm()
+                        ->setAction($this->generateUrl('cita_delete', array('id' => $citum->getIdcita())))
+                        ->setMethod('DELETE')
+                        ->getForm()
         ;
     }
+
 }

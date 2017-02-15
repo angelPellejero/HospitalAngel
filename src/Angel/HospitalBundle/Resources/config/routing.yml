@@ -13,3 +13,11 @@ angel_hospital_medico:
 angel_hospital_homepage:
     path:     /
     defaults: { _controller: AngelHospitalBundle:Default:index }
+
+angel_hospital_mostrar_medicos:
+    path:     /mostrar_medico
+    defaults: { _controller: AngelHospitalBundle:Default:mostrar }
+    
+angel_medico_citas:
+    path:     /mostrar_medico/citas
+    defaults: { _controller: AngelHospitalBundle:Default:mostarCitas }

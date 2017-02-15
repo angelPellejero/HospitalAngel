@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Citas list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Idcita</th>
+                <th>Fcita</th>
+                <th>Observaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for citum in citas %}
+            <tr>
+                <td>{{ citum.idcita }}</td>
+                <td>{% if citum.fcita %}{{ citum.fcita|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ citum.observaciones }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('angel_hospital_mostrar_medicos') }}">Volver a medicos</a>
+        </li>
+    </ul>
+{% endblock %}
